@@ -1,0 +1,40 @@
+﻿
+@{
+                /**/
+
+                ViewBag.Title = "display_flight";
+}
+
+<canvas></canvas>
+<script>
+            var canvas = document.querySelector('canvas');
+            var x = canvas.width / 2 + @ViewBag.lon * canvas.width / 360;
+            var y = canvas.height / 2 + @ViewBag.lat * canvas.height / 180;
+            var c = canvas.getContext('2d');
+
+            c.arc(x, y, 1, 0, Math.PI * 2, false);
+            c.fillStyle = "red";
+    c.fill();
+
+    var intervalTime = 1000 / @ViewBag.frequency;
+    c.beginPath();
+    c.moveTo(x, y);
+
+    var timer = (function () {
+        $.post("@Url.Action("ToXml")").done(function (xml) {
+            var xmlDoc = $.parseXML(xml),
+                $xml = $(xmlDoc),
+                lon = $xml.find("Lon").text();
+            lat = $xml.find("Lat").text();
+
+            x = canvas.width / 2 + parseFloat(lon) * canvas.width / 360;
+            y = canvas.height / 2 + parseFloat(lat) * canvas.height / 180;
+            c.lineTo(x, y);
+            c.strokeStyle = "red";
+
+            c.stroke();
+        });
+    });
+
+    setInterval(timer, intervalTime);
+</script>

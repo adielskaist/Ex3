@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "save";
+}
+
+<script>
+
+
+    var time = @ViewBag.time*1000;
+    var startTime = new Date().getTime();
+    var intervalTime = 1000 * @ViewBag.frequency;
+    var itv = setInterval(timer, intervalTime);
+    
+    function timer () {
+        $.post("@Url.Action("setInfo")").done(function () { });
+        $.post("@Url.Action("ToFile")").done(function () { });
+        if (new Date().getTime() - time > startTime) {
+            clearInterval(itv);
+        }
+    };
+    
+
+
+</script>
+

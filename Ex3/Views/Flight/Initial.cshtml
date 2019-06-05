@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Initial";
+}
+
+        <canvas></canvas>
+        <script>
+            var canvas = document.querySelector('canvas');
+            var x = canvas.width / 2 + @ViewBag.lon * canvas.width / 360;
+            var y = canvas.height / 2 + @ViewBag.lat * canvas.height / 180;
+            var c = canvas.getContext('2d');
+            c.beginPath();
+            c.arc(x, y, 1, 0, Math.PI * 2, false);
+            c.fillStyle = "red";
+            c.fill();
+        </script>

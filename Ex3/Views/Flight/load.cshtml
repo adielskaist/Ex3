@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "load";
+}
+
+<canvas></canvas>
+<script>
+    var canvas = document.querySelector('canvas');
+    var x = canvas.width / 2 + @ViewBag.lon * canvas.width / 360;
+    var y = canvas.height / 2 + @ViewBag.lat * canvas.height / 180;
+    var ctx = canvas.getContext('2d');
+    ctx.arc(x, y, 1, 0, Math.PI * 2, false);
+    ctx.fillStyle = "red";
+    ctx.fill();
+
+    var intervalTime = 1000 / @ViewBag.frequency;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    var interval = setInterval(timer, intervalTime);
+
+    function timer() {
+        $.post("@Url.Action("FileToXml")").done(function (xml) {
+            var xmlDoc = $.parseXML(xml),
+                $xml = $(xmlDoc),
+                lon = $xml.find("Lon").text();
+            lat = $xml.find("Lat").text();
+            if (lon == "null") {
+                clearInterval(interval);
+                alert("Event ended!");
+            }
+
+            x = canvas.width / 2 + parseFloat(lon) * canvas.width / 360;
+            y = canvas.height / 2 + parseFloat(lat) * canvas.height / 180;
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = "red";
+
+            ctx.stroke();
+        });
+    };
+
+</script>
