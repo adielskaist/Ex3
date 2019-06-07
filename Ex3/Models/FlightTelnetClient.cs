@@ -74,7 +74,10 @@ namespace Ex3.Models
             catch (NullReferenceException e) { }
             
         }
-
+        /// <summary>
+        /// Reading a response from the server.
+        /// </summary>
+        /// <returns>A string</returns>
         string ITelnetClient.read()
         {
             return streamReader.ReadLine();

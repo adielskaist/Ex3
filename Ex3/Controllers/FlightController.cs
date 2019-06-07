@@ -36,6 +36,12 @@ namespace Ex3.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// Drawing a point on the plain's initial location.
+        /// </summary>
+        /// <param name="IP"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Initial(string IP, int port)
         {
@@ -50,7 +56,13 @@ namespace Ex3.Controllers
             return View();
         }
 
-
+        /// <summary>
+        /// Showing an animation of the flight location.
+        /// </summary>
+        /// <param name="IP"></param>
+        /// <param name="port"></param>
+        /// <param name="frequency">the frequency of the interval</param>
+        /// <returns></returns>
         public ActionResult display_flight(string IP, int port, int frequency)
         {
             
@@ -59,7 +71,15 @@ namespace Ex3.Controllers
             ViewBag.frequency = frequency;
             return View();
         }
-
+        /// <summary>
+        /// Saving flight information to a text file.
+        /// </summary>
+        /// <param name="IP"></param>
+        /// <param name="port"></param>
+        /// <param name="frequency"></param>
+        /// <param name="time">how much time the interval will be running</param>
+        /// <param name="filename">the name of the file</param>
+        /// <returns></returns>
         public ActionResult save(string IP, int port, int frequency, int time, string filename)
         {
             Model.Instance.Connect(IP, port);
@@ -73,7 +93,12 @@ namespace Ex3.Controllers
             return View();
 
         }
-
+        /// <summary>
+        /// Loading flight data from file and showing the location on the map.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="frequency"></param>
+        /// <returns></returns>
         public ActionResult load(string filename, int frequency)
         {
             ViewBag.frequency = frequency;
@@ -82,6 +107,9 @@ namespace Ex3.Controllers
             readLocation();
             return View();
         }
+        /// <summary>
+        /// setting the current location.
+        /// </summary>
         [HttpPost]
         public void getLocation()
         {
@@ -89,6 +117,10 @@ namespace Ex3.Controllers
             ViewBag.lat = Location.Instance.Lat;
             ViewBag.lon = Location.Instance.Lon;
         }
+        /// <summary>
+        /// Casting the location to an xml document.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public string ToXml()
         {
@@ -107,7 +139,10 @@ namespace Ex3.Controllers
             writer.Flush();
             return sb.ToString();
         }
-
+        /// <summary>
+        /// getting location from a file and casting it to xml.
+        /// </summary>
+        /// <returns></returns>
         public string FileToXml()
         {
             //Initiate XML stuff
@@ -131,16 +166,25 @@ namespace Ex3.Controllers
             return sb.ToString();
         }
 
+        /// <summary>
+        /// saving flight data on a file.
+        /// </summary>
         [HttpPost]
         public void ToFile()
         {
             Model.Instance.saveToFile(Instance.writer);
         }
+        /// <summary>
+        /// setting plain's lon, lat, alt, heading and speed to an Info class.
+        /// </summary>
         [HttpPost]
         public void setInfo()
         {
             Model.Instance.setInfo();
         }
+        /// <summary>
+        /// reading location from file.
+        /// </summary>
         [HttpPost]
         public void readLocation()
         {

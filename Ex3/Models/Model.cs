@@ -28,6 +28,11 @@ namespace Ex3.Models
         #endregion
         Mutex mutex = new Mutex();
         bool connected = false;
+        /// <summary>
+        /// Connects to simulator server.
+        /// </summary>
+        /// <param name="IP"></param>
+        /// <param name="port"></param>
         public void Connect(string IP, int port)
         {
             if (connected)
@@ -35,6 +40,11 @@ namespace Ex3.Models
             FlightTelnetClient.Instance.connect(IP, port);
             connected = true;
         }
+        /// <summary>
+        /// Sending a request to the server and getting a response.
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns>a string</returns>
         private string getLine(string cmd)
         {
             FlightTelnetClient.Instance.write(cmd);
@@ -63,7 +73,9 @@ namespace Ex3.Models
         {
             return new Parser().Parse(getLine("get /instrumentation/heading-indicator/indicated-heading-deg\r\n"));
         }
-
+        /// <summary>
+        /// setting the location class.
+        /// </summary>
         public void setLocation()
         {
             mutex.WaitOne();
@@ -71,7 +83,9 @@ namespace Ex3.Models
             Location.Instance.Lat = getLat();
             mutex.ReleaseMutex();
         }
-
+        /// <summary>
+        /// setting the info class.
+        /// </summary>
         public void setInfo()
         {
             mutex.WaitOne();
@@ -82,7 +96,10 @@ namespace Ex3.Models
             Info.Instance.Heading = getHeading();
             mutex.ReleaseMutex();
         }
-        
+        /// <summary>
+        /// writing info to a text file.
+        /// </summary>
+        /// <param name="writer"></param>
         public void saveToFile(StreamWriter writer)
         {
             mutex.WaitOne();
@@ -94,7 +111,11 @@ namespace Ex3.Models
             writer.Flush();
             mutex.ReleaseMutex();
         }
-
+        /// <summary>
+        /// getting location from a text file and setting it into a location class.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns>false if the line is empty ant true otherwise</returns>
         public bool readLocation(StreamReader reader)
         {
             mutex.WaitOne();

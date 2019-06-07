@@ -22,7 +22,10 @@ namespace Ex3.Models
         }
         public double Lon { get; set; }
         public double Lat { get; set; }
-
+        /// <summary>
+        /// writing the class properties to a xml document.
+        /// </summary>
+        /// <param name="writer"></param>
         public void ToXml(XmlWriter writer)
         {
             writer.WriteStartElement("Location");
